@@ -1,6 +1,7 @@
 import Category from './components/Category'
 import Header from './components/Header'
 import Products from './components/Products'
+import { useState } from 'react'
 
 const products = [
 	{
@@ -39,12 +40,16 @@ const categories = [
 ]
 
 function App() {
+	const [categories, setCategories] = useState([])
 	return (
 		<div className="bg-slate-800 min-h-screen">
 			<Header />
 			<div className="container max-w-screen-sm mx-auto p-4">
-				<Category />
-				<Products />
+				<Category
+					categories={categories}
+					setCategories={setCategories}
+				/>
+				<Products categories={categories} />
 			</div>
 		</div>
 	)

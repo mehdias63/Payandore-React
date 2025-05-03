@@ -1,12 +1,11 @@
 import { useState } from 'react'
 
-function Category() {
+function Category({ categories, setCategories }) {
 	const [isShow, setIsShow] = useState(false)
 	const [categoryForm, setCategoryForm] = useState({
 		title: '',
 		description: '',
 	})
-	const [categories, setCategories] = useState([])
 
 	const changeHandler = e => {
 		const { name, value } = e.target

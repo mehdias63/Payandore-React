@@ -1,4 +1,25 @@
-function Products({ categories }) {
+import { useState } from 'react'
+
+function Products({ categories, products, setProducts }) {
+	const [productsForm, setProductsForm] = useState({
+		title: '',
+		quantity: 0,
+		category: '',
+	})
+
+	const changeHandler = e => {
+		const { name, value } = e.target
+		setProductsForm({ ...productsForm, [name]: value })
+	}
+
+	const addNewProduct = e => {
+		e.preventDefault()
+		setProducts([
+			...products,
+			{ ...productsForm, createdAt: new Date().toISOString() },
+		])
+		setProductsForm({ title: '', quantity: '', category: '' })
+	}
 	return (
 		<div className="mb-6">
 			<h2 className="text-xl text-slate-300 font-bold mb-2">
@@ -14,9 +35,11 @@ function Products({ categories }) {
 					</label>
 					<input
 						type="text"
-						name="product-title"
+						name="title"
 						id="product-title"
 						className="bg-transparent rounded-xl border border-slate-500 text-slate-400 w-full md:w-auto"
+						value={productsForm.title}
+						onChange={changeHandler}
 					/>
 				</div>
 				<div>
@@ -29,8 +52,10 @@ function Products({ categories }) {
 					<input
 						className="bg-transparent rounded-xl border border-slate-500 text-slate-400 w-full md:w-auto"
 						type="number"
-						name="product-quantity"
+						name="quantity"
 						id="product-quantity"
+						value={productsForm.quantity}
+						onChange={changeHandler}
 					/>
 				</div>
 				<div>
@@ -41,7 +66,9 @@ function Products({ categories }) {
 						category
 					</label>
 					<select
-						name="product-category"
+						onChange={changeHandler}
+						value={productsForm.category}
+						name="category"
 						id="product-category"
 						className="bg-transparent text-slate-400 rounded-xl w-full"
 					>
@@ -53,7 +80,7 @@ function Products({ categories }) {
 								<option
 									key={category.createdAt}
 									className="bg-slate-500 text-slate-300"
-									value=""
+									value={category.title}
 								>
 									{category.title}
 								</option>
@@ -65,6 +92,7 @@ function Products({ categories }) {
 					<button
 						id="add-new-product"
 						className="flex-1 bg-slate-500 text-slate-200 rounded-xl py-2"
+						onClick={addNewProduct}
 					>
 						Add new Product
 					</button>

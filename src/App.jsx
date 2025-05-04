@@ -1,46 +1,12 @@
 import Category from './components/Category'
 import Header from './components/Header'
+import ProductList from './components/ProductList'
 import Products from './components/Products'
 import { useState } from 'react'
 
-const products = [
-	{
-		id: 1,
-		title: 'React.js',
-		category: 'Frontend',
-		created: '2022-10-08T18:48:46.250Z',
-	},
-	{
-		id: 2,
-		title: 'Node.js',
-		category: 'Backend',
-		created: '2023-11-04T18:48:46.250Z',
-	},
-	{
-		id: 3,
-		title: 'Vue.js',
-		category: 'Frontend',
-		created: '2024-05-11T18:48:46.250Z',
-	},
-]
-
-const categories = [
-	{
-		id: 1,
-		title: 'Frontend',
-		description: 'The Frontend of Application',
-		created: '2023-11-04T18:48:46.250Z',
-	},
-	{
-		id: 2,
-		title: 'Backend',
-		description: 'The Backend of Application',
-		created: '2023-10-04T18:48:46.250Z',
-	},
-]
-
 function App() {
 	const [categories, setCategories] = useState([])
+	const [products, setProducts] = useState([])
 	return (
 		<div className="bg-slate-800 min-h-screen">
 			<Header />
@@ -49,7 +15,12 @@ function App() {
 					categories={categories}
 					setCategories={setCategories}
 				/>
-				<Products categories={categories} />
+				<Products
+					categories={categories}
+					products={products}
+					setProducts={setProducts}
+				/>
+				<ProductList products={products} setProducts={setProducts} />
 			</div>
 		</div>
 	)

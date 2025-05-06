@@ -7,7 +7,7 @@ function ProductList({ products, setProducts }) {
 	}
 	return (
 		<div>
-			<h2>ProductList</h2>
+			<h2 className="text-slate-400">ProductList</h2>
 			{products.map(product => {
 				return (
 					<div

@@ -3,7 +3,7 @@ import { useState } from 'react'
 function Products({ categories, products, setProducts }) {
 	const [productsForm, setProductsForm] = useState({
 		title: '',
-		quantity: 0,
+		quantity: '',
 		category: '',
 	})
 
@@ -14,12 +14,15 @@ function Products({ categories, products, setProducts }) {
 
 	const addNewProduct = e => {
 		e.preventDefault()
-		setProducts([
-			...products,
-			{ ...productsForm, createdAt: new Date().toISOString() },
-		])
+		const newProduct = {
+			id: crypto.randomUUID(),
+			...productsForm,
+			createdAt: new Date().toISOString(),
+		}
+		setProducts([...products, newProduct])
 		setProductsForm({ title: '', quantity: '', category: '' })
 	}
+
 	return (
 		<div className="mb-6">
 			<h2 className="text-xl text-slate-300 font-bold mb-2">
@@ -75,17 +78,15 @@ function Products({ categories, products, setProducts }) {
 						<option className="bg-slate-500 text-slate-300" value="">
 							select a category
 						</option>
-						{categories.map(category => {
-							return (
-								<option
-									key={category.createdAt}
-									className="bg-slate-500 text-slate-300"
-									value={category.title}
-								>
-									{category.title}
-								</option>
-							)
-						})}
+						{categories.map(category => (
+							<option
+								key={category.title}
+								className="bg-slate-500 text-slate-300"
+								value={category.title}
+							>
+								{category.title}
+							</option>
+						))}
 					</select>
 				</div>
 				<div className="flex items-center justify-between gap-x-4">

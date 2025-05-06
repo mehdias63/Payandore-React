@@ -10,20 +10,25 @@ function App() {
 	const [products, setProducts] = useState([])
 	const [filteredProducts, setFilteredProducts] = useState([])
 	const [sort, setSort] = useState('')
+	const [selectedCategory, setSelectedCategory] = useState('')
 	const [searchValue, setSearchValue] = useState('')
 
 	useEffect(() => {
 		let result = products
 		result = filterSearchTitle(result)
+		result = filterSelectedCategory(result)
 		result = sortDate(result)
 		setFilteredProducts(result)
-	}, [products, sort, searchValue])
+	}, [products, sort, searchValue, selectedCategory])
 
 	const searchHandler = e => {
 		setSearchValue(e.target.value.trim().toLowerCase())
 	}
 	const sortHandler = e => {
 		setSort(e.target.value)
+	}
+	const selectCategoryHandler = e => {
+		setSelectedCategory(e.target.value)
 	}
 	const filterSearchTitle = array => {
 		return array.filter(p =>
@@ -39,6 +44,24 @@ function App() {
 				return new Date(a.createdAt) > new Date(b.createdAt) ? 1 : -1
 			}
 		})
+	}
+
+	const filterSelectedCategory = array => {
+		if (!selectedCategory) return array
+		return array.filter(item => item.category === selectedCategory)
+	}
+	const deleteProductHandler = productId => {
+		setProducts(prevProducts =>
+			prevProducts.filter(p => p.id !== productId),
+		)
+	}
+
+	const editProductHandler = editedProduct => {
+		setProducts(prevProducts =>
+			prevProducts.map(p =>
+				p.id === editedProduct.id ? { ...editedProduct } : p,
+			),
+		)
 	}
 
 	useEffect(() => {
@@ -80,10 +103,15 @@ function App() {
 					onSort={sortHandler}
 					onSearch={searchHandler}
 					sort={sort}
+					categories={categories}
+					selectedCategory={selectedCategory}
+					onSelectedCategory={selectCategoryHandler}
 				/>
 				<ProductList
 					products={filteredProducts}
-					setProducts={setProducts}
+					onDelete={deleteProductHandler}
+					categories={categories}
+					onEdit={editProductHandler}
 				/>
 			</div>
 		</div>

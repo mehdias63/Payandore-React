@@ -33,15 +33,12 @@ function Category() {
 				className={`mb-6 ${isShow ? '' : 'hidden'}`}
 				id="category-wrapper"
 			>
-				<h2 className="text-xl text-slate-300 font-bold mb-2">
+				<h2 className="text-xl font-bold mb-2 text-primary-900">
 					Add New Category
 				</h2>
-				<form className="bg-slate-700 p-4 rounded-xl flex flex-col gap-y-4">
+				<form className="bg-primary-500 text-primary-900 p-4 rounded-xl flex flex-col gap-y-4">
 					<div>
-						<label
-							htmlFor="category-title"
-							className="block mb-1 text-slate-400"
-						>
+						<label htmlFor="category-title" className="block mb-1">
 							Title
 						</label>
 						<input
@@ -49,19 +46,19 @@ function Category() {
 							name="title"
 							value={categoryForm.title}
 							id="category-title"
-							className="bg-transparent rounded-xl border border-slate-500 text-slate-400 w-full md:w-auto"
+							className="bg-transparent rounded-lg border border-primary-300 w-full md:w-auto"
 							onChange={changeHandler}
 						/>
 					</div>
 					<div>
 						<label
 							htmlFor="category-description"
-							className="block mb-1 text-slate-400"
+							className="block mb-1"
 						>
 							Description
 						</label>
 						<textarea
-							className="bg-transparent rounded-xl border border-slate-500 text-slate-400 w-full"
+							className="bg-transparent rounded-lg border border-primary-300 w-full"
 							name="description"
 							value={categoryForm.description}
 							id="category-description"
@@ -70,7 +67,7 @@ function Category() {
 					</div>
 					<div className="flex items-center justify-between gap-x-4">
 						<button
-							className="flex-1 border border-slate-400 text-slate-400 rounded-xl py-2"
+							className="flex-1 border border-primary-300 rounded-lg py-2 hover:bg-primary-300/40"
 							onClick={e => {
 								e.preventDefault()
 								setIsShow(false)
@@ -79,7 +76,7 @@ function Category() {
 							Cancel
 						</button>
 						<button
-							className="flex-1 bg-slate-500 text-slate-200 rounded-xl py-2"
+							className="flex-1 bg-primary-300 rounded-lg py-2 hover:bg-primary-300/40"
 							onClick={AddNewCategoryHandler}
 						>
 							Add Category

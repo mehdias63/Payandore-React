@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { AppProvider } from './Store'
+import { DarkModeProvider } from './context/DarkModeContext'
 
 createRoot(document.getElementById('root')).render(
 	<StrictMode>
-		<AppProvider>
-			<App />
-		</AppProvider>
+		<DarkModeProvider>
+			<AppProvider>
+				<App />
+			</AppProvider>
+		</DarkModeProvider>
 	</StrictMode>,
 )

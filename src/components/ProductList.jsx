@@ -41,14 +41,14 @@ function ProductList() {
 	}
 
 	return (
-		<div className="text-slate-300 mt-6">
-			<h2 className="text-lg font-semibold mb-4">Product List</h2>
+		<div className="text-primary-900 mt-6 mb-40">
+			<h2 className="text-xl font-bold mb-4">Product List</h2>
 			{filteredProducts.map(product => {
 				const isEditing = editId === product.id
 				return (
 					<div
 						key={product.id}
-						className="bg-slate-700 p-4 rounded-xl mb-2 flex flex-col gap-2"
+						className="bg-primary-500 p-4 rounded-xl mb-6 flex flex-col gap-2 "
 					>
 						{isEditing ? (
 							<>
@@ -62,7 +62,7 @@ function ProductList() {
 										})
 									}
 									placeholder="Title"
-									className="bg-slate-800 text-slate-300 p-2 rounded"
+									className="bg-primary-500 p-2 rounded-lg border-primary-300"
 								/>
 								<input
 									type="number"
@@ -74,7 +74,7 @@ function ProductList() {
 										})
 									}
 									placeholder="Quantity"
-									className="bg-slate-800 text-slate-300 p-2 rounded"
+									className="bg-primary-500 p-2 rounded-lg border-primary-300"
 								/>
 								<select
 									value={editedProduct.category}
@@ -84,7 +84,7 @@ function ProductList() {
 											category: e.target.value,
 										})
 									}
-									className="bg-slate-800 text-slate-300 p-2 rounded"
+									className="bg-primary-500 p-2 rounded-lg border-primary-300"
 								>
 									<option value="">Select a category</option>
 									{categories.map(cat => (
@@ -93,15 +93,15 @@ function ProductList() {
 										</option>
 									))}
 								</select>
-								<div className="flex gap-2 mt-2">
+								<div className="flex gap-2 mt-2 items-center justify-between">
 									<button
-										className="bg-blue-500 px-4 py-1 rounded"
+										className="bg-primary-300 px-4 py-1 rounded-lg hover:bg-primary-300/40"
 										onClick={handleSave}
 									>
 										Save
 									</button>
 									<button
-										className="bg-gray-500 px-4 py-1 rounded"
+										className="bg-transparent border border-primary-900 px-4 py-1 rounded-lg hover:bg-primary-300/40"
 										onClick={handleCancel}
 									>
 										Cancel
@@ -109,12 +109,22 @@ function ProductList() {
 								</div>
 							</>
 						) : (
-							<>
-								<div>
-									<strong>{product.title}</strong> -{' '}
-									{product.quantity} pcs - <em>{product.category}</em>
+							<div className="flex justify-between items-center">
+								<div className="flex items-center gap-x-3">
+									<h3 className="text-lg font-bold">
+										{product.title}
+									</h3>
+									<p>{product.category}</p>
+									<span className="">
+										{new Date(product.createdAt).toLocaleDateString(
+											'en-UK',
+										)}
+									</span>
+									<span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-300 border-2 border-slate-300 font-bold ">
+										{product.quantity}
+									</span>
 								</div>
-								<div className="flex gap-2">
+								<div className="flex gap-6">
 									<button
 										className="text-blue-400"
 										onClick={() => handleEditClick(product)}
@@ -122,13 +132,13 @@ function ProductList() {
 										Edit
 									</button>
 									<button
-										className="text-red-400"
+										className="text-error"
 										onClick={() => handleDelete(product.id)}
 									>
 										Delete
 									</button>
 								</div>
-							</>
+							</div>
 						)}
 					</div>
 				)

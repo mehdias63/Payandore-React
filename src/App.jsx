@@ -95,7 +95,7 @@ function App() {
 	}, [categories])
 
 	return (
-		<div className="bg-slate-800 min-h-screen">
+		<div className=" min-h-screen">
 			<Header products={products} />
 			<div className="container max-w-screen-sm mx-auto p-4">
 				<Category categories={categories} />

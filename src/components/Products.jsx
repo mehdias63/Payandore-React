@@ -1,6 +1,10 @@
 import { useState } from 'react'
+import { useAppContext } from '../Store'
 
-function Products({ categories, products, setProducts }) {
+function Products() {
+	const { state, dispatch } = useAppContext()
+	const { categories, products } = state
+
 	const [productsForm, setProductsForm] = useState({
 		title: '',
 		quantity: '',
@@ -19,7 +23,10 @@ function Products({ categories, products, setProducts }) {
 			...productsForm,
 			createdAt: new Date().toISOString(),
 		}
-		setProducts([...products, newProduct])
+		dispatch({
+			type: 'SET_PRODUCTS',
+			payload: [...products, newProduct],
+		})
 		setProductsForm({ title: '', quantity: '', category: '' })
 	}
 
@@ -34,14 +41,14 @@ function Products({ categories, products, setProducts }) {
 						htmlFor="product-title"
 						className="block mb-1 text-slate-400"
 					>
-						title
+						Title
 					</label>
 					<input
 						type="text"
 						name="title"
+						value={productsForm.title}
 						id="product-title"
 						className="bg-transparent rounded-xl border border-slate-500 text-slate-400 w-full md:w-auto"
-						value={productsForm.title}
 						onChange={changeHandler}
 					/>
 				</div>
@@ -50,14 +57,14 @@ function Products({ categories, products, setProducts }) {
 						htmlFor="product-quantity"
 						className="block mb-1 text-slate-400"
 					>
-						quantity
+						Quantity
 					</label>
 					<input
-						className="bg-transparent rounded-xl border border-slate-500 text-slate-400 w-full md:w-auto"
 						type="number"
 						name="quantity"
-						id="product-quantity"
 						value={productsForm.quantity}
+						id="product-quantity"
+						className="bg-transparent rounded-xl border border-slate-500 text-slate-400 w-full md:w-auto"
 						onChange={changeHandler}
 					/>
 				</div>
@@ -66,7 +73,7 @@ function Products({ categories, products, setProducts }) {
 						htmlFor="product-category"
 						className="block mb-1 text-slate-400"
 					>
-						category
+						Category
 					</label>
 					<select
 						onChange={changeHandler}
@@ -75,15 +82,9 @@ function Products({ categories, products, setProducts }) {
 						id="product-category"
 						className="bg-transparent text-slate-400 rounded-xl w-full"
 					>
-						<option className="bg-slate-500 text-slate-300" value="">
-							select a category
-						</option>
+						<option value="">Select a category</option>
 						{categories.map(category => (
-							<option
-								key={category.title}
-								className="bg-slate-500 text-slate-300"
-								value={category.title}
-							>
+							<option key={category.title} value={category.title}>
 								{category.title}
 							</option>
 						))}
@@ -91,11 +92,10 @@ function Products({ categories, products, setProducts }) {
 				</div>
 				<div className="flex items-center justify-between gap-x-4">
 					<button
-						id="add-new-product"
 						className="flex-1 bg-slate-500 text-slate-200 rounded-xl py-2"
 						onClick={addNewProduct}
 					>
-						Add new Product
+						Add New Product
 					</button>
 				</div>
 			</form>

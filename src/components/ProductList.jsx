@@ -1,6 +1,10 @@
 import { useState } from 'react'
+import { useAppContext } from '../Store'
 
-function ProductList({ products, onDelete, onEdit, categories }) {
+function ProductList() {
+	const { state, dispatch } = useAppContext()
+	const { filteredProducts, categories } = state
+
 	const [editId, setEditId] = useState(null)
 	const [editedProduct, setEditedProduct] = useState({
 		title: '',
@@ -10,7 +14,7 @@ function ProductList({ products, onDelete, onEdit, categories }) {
 
 	const handleEditClick = product => {
 		setEditId(product.id)
-		setEditedProduct({ ...product }) // پر کردن مقادیر محصول برای ویرایش
+		setEditedProduct({ ...product })
 	}
 
 	const handleSave = () => {
@@ -19,9 +23,8 @@ function ProductList({ products, onDelete, onEdit, categories }) {
 			editedProduct.quantity &&
 			editedProduct.category
 		) {
-			// ذخیره کردن تغییرات
-			onEdit(editedProduct)
-			setEditId(null) // بستن حالت ویرایش
+			dispatch({ type: 'EDIT_PRODUCT', payload: editedProduct })
+			setEditId(null)
 			setEditedProduct({ title: '', quantity: '', category: '' })
 		} else {
 			alert('لطفا تمام فیلدها را پر کنید!')
@@ -33,21 +36,24 @@ function ProductList({ products, onDelete, onEdit, categories }) {
 		setEditedProduct({ title: '', quantity: '', category: '' })
 	}
 
+	const handleDelete = id => {
+		dispatch({ type: 'DELETE_PRODUCT', payload: id })
+	}
+
 	return (
-		<div>
-			<h2 className="text-slate-400">ProductList</h2>
-			{products.map(product => {
+		<div className="text-slate-300 mt-6">
+			<h2 className="text-lg font-semibold mb-4">Product List</h2>
+			{filteredProducts.map(product => {
 				const isEditing = editId === product.id
 				return (
 					<div
 						key={product.id}
-						className="flex items-center justify-between mb-2 w-full min-w-[400px]"
+						className="bg-slate-700 p-4 rounded-xl mb-2 flex flex-col gap-2"
 					>
 						{isEditing ? (
-							<div className="w-full">
+							<>
 								<input
 									type="text"
-									name="title"
 									value={editedProduct.title}
 									onChange={e =>
 										setEditedProduct({
@@ -55,11 +61,11 @@ function ProductList({ products, onDelete, onEdit, categories }) {
 											title: e.target.value,
 										})
 									}
-									className="bg-transparent text-slate-400 rounded-xl border border-slate-500 w-full mb-2"
+									placeholder="Title"
+									className="bg-slate-800 text-slate-300 p-2 rounded"
 								/>
 								<input
 									type="number"
-									name="quantity"
 									value={editedProduct.quantity}
 									onChange={e =>
 										setEditedProduct({
@@ -67,10 +73,10 @@ function ProductList({ products, onDelete, onEdit, categories }) {
 											quantity: e.target.value,
 										})
 									}
-									className="bg-transparent text-slate-400 rounded-xl border border-slate-500 w-full mb-2"
+									placeholder="Quantity"
+									className="bg-slate-800 text-slate-300 p-2 rounded"
 								/>
 								<select
-									name="category"
 									value={editedProduct.category}
 									onChange={e =>
 										setEditedProduct({
@@ -78,61 +84,51 @@ function ProductList({ products, onDelete, onEdit, categories }) {
 											category: e.target.value,
 										})
 									}
-									className="bg-transparent text-slate-400 rounded-xl border border-slate-500 w-full mb-2"
+									className="bg-slate-800 text-slate-300 p-2 rounded"
 								>
 									<option value="">Select a category</option>
 									{categories.map(cat => (
-										<option key={cat.createdAt} value={cat.title}>
+										<option key={cat.title} value={cat.title}>
 											{cat.title}
 										</option>
 									))}
 								</select>
-								<div className="flex items-center gap-x-4">
+								<div className="flex gap-2 mt-2">
 									<button
+										className="bg-blue-500 px-4 py-1 rounded"
 										onClick={handleSave}
-										className="bg-blue-500 text-white rounded-xl px-4 py-2"
 									>
 										Save
 									</button>
 									<button
+										className="bg-gray-500 px-4 py-1 rounded"
 										onClick={handleCancel}
-										className="bg-red-500 text-white rounded-xl px-4 py-2"
 									>
 										Cancel
 									</button>
 								</div>
-							</div>
+							</>
 						) : (
-							<div className="flex items-center gap-x-4 w-full">
-								<span className="text-slate-400">
-									{product.title}
-								</span>
-								<span className="text-slate-400">
-									{new Date(product.createdAt).toLocaleDateString(
-										'fa-IR',
-									)}
-								</span>
-								<span className="block px-3 py-0.5 text-slate-400 border border-slate-400 text-sm rounded-2xl">
-									{product.category}
-								</span>
-								<span className="flex items-center justify-center w-7 h-7 rounded-full bg-slate-500 border-2 border-slate-300 text-slate-300">
-									{product.quantity}
-								</span>
-								<div className="flex items-center gap-x-4">
+							<>
+								<div>
+									<strong>{product.title}</strong> -{' '}
+									{product.quantity} pcs - <em>{product.category}</em>
+								</div>
+								<div className="flex gap-2">
 									<button
-										className="bg-green-500 text-white rounded-xl px-4 py-2"
+										className="text-blue-400"
 										onClick={() => handleEditClick(product)}
 									>
 										Edit
 									</button>
 									<button
-										className="delete-product border px-2 py-o.5 rounded-2xl border-red-400 text-red-400"
-										onClick={() => onDelete(product.id)}
+										className="text-red-400"
+										onClick={() => handleDelete(product.id)}
 									>
 										Delete
 									</button>
 								</div>
-							</div>
+							</>
 						)}
 					</div>
 				)

@@ -1,86 +1,48 @@
+import { useAppContext } from '../store'
+
 function Filter({
 	onSort,
-	sort,
 	onSearch,
-	searchValue,
-	categories,
+	sort,
 	selectedCategory,
 	onSelectedCategory,
 }) {
+	const { state } = useAppContext()
+	const { categories, searchValue } = state
+
 	return (
-		<div>
-			<div className="flex items-center justify-between mb-6">
-				<label
-					htmlFor="search-input"
-					className="text-slate-500 text-lg"
-				>
-					search
-				</label>
+		<div className="bg-slate-700 p-4 rounded-xl mb-6">
+			<h2 className="text-slate-300 font-bold mb-4">
+				Filter Products
+			</h2>
+			<div className="flex flex-col gap-4">
 				<input
 					type="text"
-					name="search-input"
-					id="search-input"
-					className="bg-transparent rounded-xl border border-slate-500 text-slate-400"
 					value={searchValue}
 					onChange={onSearch}
+					placeholder="Search by title"
+					className="bg-slate-800 text-slate-200 p-2 rounded"
 				/>
-			</div>
-			<div className="flex items-center justify-between mb-6">
-				<label
-					htmlFor="sort-products"
-					className="text-slate-500 text-lg"
-				>
-					sort
-				</label>
 				<select
-					name="sort-products"
-					id="sort-products"
-					className="bg-transparent text-slate-400 rounded-xl"
-					value={sort}
-					onChange={onSort}
-				>
-					<option
-						className="bg-slate-500 text-slate-300"
-						value="latest"
-					>
-						latest
-					</option>
-					<option
-						className="bg-slate-500 text-slate-300"
-						value="earliest"
-					>
-						earliest
-					</option>
-				</select>
-			</div>
-			<div className="flex items-center justify-between mb-6">
-				<label
-					htmlFor="sort-products"
-					className="text-slate-500 text-lg"
-				>
-					category
-				</label>
-				<select
-					name="sort-products"
-					id="sort-products"
-					className="bg-transparent text-slate-400 rounded-xl"
 					value={selectedCategory}
 					onChange={onSelectedCategory}
+					className="bg-slate-800 text-slate-200 p-2 rounded"
 				>
-					<option className="bg-slate-500 text-slate-300" value="">
-						all
-					</option>
-					{categories.map(category => {
-						return (
-							<option
-								className="bg-slate-500 text-slate-300"
-								value={category.title}
-								key={category.createdAt}
-							>
-								{category.title}
-							</option>
-						)
-					})}
+					<option value="">All categories</option>
+					{categories.map(cat => (
+						<option key={cat.title} value={cat.title}>
+							{cat.title}
+						</option>
+					))}
+				</select>
+				<select
+					value={sort}
+					onChange={onSort}
+					className="bg-slate-800 text-slate-200 p-2 rounded"
+				>
+					<option value="">Sort by</option>
+					<option value="latest">Newest first</option>
+					<option value="earliest">Oldest first</option>
 				</select>
 			</div>
 		</div>

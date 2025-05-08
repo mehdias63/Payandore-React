@@ -1,4 +1,4 @@
-import { useAppContext } from '../store'
+import { useAppContext } from '../Store'
 
 function Filter({
 	onSort,
